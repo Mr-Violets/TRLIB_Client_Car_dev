@@ -11,12 +11,11 @@ int main()
 {
 
     system("sudo chmod 666 /dev/ttyUSB0");
-    system("sudo chmod 666 /dev/video0");
     // 创建并启动数据采集线程
     std::thread dataCollectionThread(dataCollectionTask);
     // 创建并启动文件发送线程
     std::thread processingThread(ProcessingTask);
-    // std::thread fileSenderThread(fileSendingTask, server, port);
+    std::thread fileSenderThread(fileSendingTask, server, port);
     
     
 
@@ -48,7 +47,7 @@ int main()
 
     cKeepRunning = false;
     dataCollectionThread.join();
-    // fileSenderThread.join();
+    fileSenderThread.join();
     processingThread.join();
  
     return 0;

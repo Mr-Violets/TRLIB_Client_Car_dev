@@ -83,12 +83,12 @@ bool DataProcessing::processDirectories()
         } catch (const fs::filesystem_error &e) {
             std::cerr << "Error moving file: " << e.what() << "\n";
         }
-        // 将对齐后的文件夹路径推送到发送队列
-        // {
-        //     std::lock_guard<std::mutex> lock(processingToSendingQueueMutex);
-        //     processingToSendingQueue.push(basePath);
-        //     processingToSendingQueueCondition.notify_one();
-        // }
+        //  将对齐后的文件夹路径推送到发送队列
+        {
+             std::lock_guard<std::mutex> lock(processingToSendingQueueMutex);
+             processingToSendingQueue.push(basePath);
+             processingToSendingQueueCondition.notify_one();
+        }
     }
     return true; // 处理正常完成，返回true
 }
